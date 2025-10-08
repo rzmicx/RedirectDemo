@@ -1,0 +1,93 @@
+﻿@page
+@model RedirectDemoModel
+@{
+    ViewData["Title"] = "Redirect Demo";
+    Layout = null; // agar halaman berdiri sendiri
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Redirect Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 40px;
+            background: #f9fafb;
+        }
+
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-backend {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-frontend {
+            background-color: #059669;
+            color: white;
+        }
+
+        .info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        h2 {
+            color: #111827;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔗 Redirect Demonstration</h2>
+
+        <form method="post">
+            <p>Masukkan URL tujuan:</p>
+
+            <input asp-for="TargetUrl" placeholder="contoh: https://10.255.255.1" />
+
+            <br /><br />
+
+            <button type="submit" class="btn-backend" asp-page-handler="Backend">
+                Redirect by Backend
+            </button>
+            <button type="submit" class="btn-frontend" asp-page-handler="Frontend">
+                Redirect by Frontend
+            </button>
+        </form>
+
+        <div class="info">
+            💡 <b>Penjelasan:</b><br />
+            - Tombol <b>Backend</b> nanti akan menggunakan <code>Response.Redirect()</code> langsung dari server.<br />
+            - Tombol <b>Frontend</b> akan menggunakan <code>window.location.href</code> dan timeout agar UX tetap terkontrol.<br /><br />
+            Dua halaman ini akan dipisah untuk menunjukkan perbedaan hasil.
+        </div>
+    </div>
+</body>
+</html>

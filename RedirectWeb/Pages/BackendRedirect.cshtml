@@ -1,0 +1,26 @@
+﻿@page
+@model BackendRedirectModel
+@{
+    ViewData["Title"] = "Backend Redirect";
+    Layout = null;
+}
+
+<h2>Backend Redirect Page</h2>
+
+<form method="post">
+    <div>
+        <label for="url">URL Tujuan:</label>
+        <input type="text" id="url" name="TargetUrl" value="@Model.TargetUrl" style="width:400px;" />
+    </div>
+    <button type="submit">Redirect by Backend</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p style="color:red">@Model.Message</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.FromPage))
+{
+    <a href="/RedirectDemo">⬅️ Kembali ke Halaman Utama</a>
+}

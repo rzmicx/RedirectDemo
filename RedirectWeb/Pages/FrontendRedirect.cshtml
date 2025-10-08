@@ -1,0 +1,100 @@
+﻿@page
+@model FrontendRedirectModel
+@{
+    ViewData["Title"] = "Frontend Redirect";
+    Layout = null;
+    var target = Model.TargetUrl;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Frontend Redirect</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 40px;
+            background: #f9fafb;
+            color: #111827;
+        }
+
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .spinner {
+            border: 4px solid #eee;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+ 
+
+        .status {
+            font-size: 16px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        button {
+            padding: 8px 14px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const url = "@target";
+            const status = document.getElementById("status");
+            const spinner = document.getElementById("spinner");
+
+            status.innerText = "🔄 Mengarahkan ke " + url + "...";
+
+            // Setelah 5 detik, kalau belum pindah, anggap gagal
+            const timeout = setTimeout(() => {
+                spinner.style.display = "none";
+                status.innerText = "⚠️ Server tidak merespons. Tetap di halaman ini.";
+                status.style.color = "red";
+                document.getElementById("retry").style.display = "inline-block";
+            }, 5000);
+
+            try {
+                // coba redirect
+                window.location.href = url;
+            } catch {
+                clearTimeout(timeout);
+                status.innerText = "❌ URL tidak valid.";
+                status.style.color = "red";
+            }
+        });
+
+        function retry() {
+            location.reload();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>🌐 Frontend Redirect Simulation</h2>
+        <div id="spinner" class="spinner"></div>
+        <div id="status" class="status"></div>
+        <br />
+        <button id="retry" style="display:none;" onclick="retry()">🔁 Coba Lagi</button>
+        <br /><br />
+        <a href="/RedirectDemo">⬅️ Kembali ke Halaman Utama</a>
+    </div>
+</body>
+</html>

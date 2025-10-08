@@ -1,0 +1,42 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace RedirectWeb.Pages
+{
+    public class BackendRedirectModel : PageModel
+    {
+        [BindProperty]
+        public string? TargetUrl { get; set; }
+
+        public string? Message { get; set; }
+        public string? FromPage { get; set; }
+
+        // Dijalankan ketika halaman pertama kali dibuka (GET)
+        public void OnGet(string? url = null, string? from = null)
+        {
+            TargetUrl = url;
+            FromPage = from ?? HttpContext.Request.Headers["Referer"].ToString();
+        }
+
+        // Dijalankan ketika user klik tombol submit
+        public IActionResult OnPost()
+        {
+            if (string.IsNullOrWhiteSpace(TargetUrl))
+            {
+                Message = "URL tidak boleh kosong.";
+                return Page();
+            }
+
+            try
+            {
+                // Redirect via backend
+                return Redirect(TargetUrl);
+            }
+            catch (Exception ex)
+            {
+                Message = $"Gagal redirect: {ex.Message}";
+                return Page();
+            }
+        }
+    }
+}
