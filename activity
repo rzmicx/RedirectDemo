@@ -1,0 +1,56 @@
+public class RoleMappingCategory : BaseModel
+{
+    public int MappingCategoryId { get; set; }
+
+    public int CategoryId { get; set; }
+
+    public int RoleId { get; set; }
+
+    public Category? Category { get; set; }
+
+    public Role? Role { get; set; }
+}
+
+public virtual DbSet<RoleMappingCategory> RoleMappingCategories { get; set; }
+
+modelBuilder.Entity<RoleMappingCategory>(entity =>
+{
+    entity.HasKey(e => e.MappingCategoryId);
+
+    entity.ToTable("utl_role_mapping_category");
+
+    entity.Property(e => e.MappingCategoryId)
+        .HasColumnName("mapping_Category_id");
+
+    entity.Property(e => e.CategoryId)
+        .HasColumnName("category_id");
+
+    entity.Property(e => e.RoleId)
+        .HasColumnName("role_id");
+
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
+
+    entity.Property(e => e.CreateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("create_by");
+
+    entity.Property(e => e.UpdateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("update_by");
+
+    entity.HasOne(d => d.Category)
+        .WithMany()
+        .HasForeignKey(d => d.CategoryId);
+
+    entity.HasOne(d => d.Role)
+        .WithMany()
+        .HasForeignKey(d => d.RoleId);
+});
