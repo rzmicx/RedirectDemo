@@ -1,0 +1,42 @@
+ modelBuilder.Entity<Role>(entity =>
+ {
+     entity.HasKey(e => e.RoleId)
+         .HasName("PK__utl_role__760965CC2B934FE1");
+
+     entity.ToTable("utl_role");
+
+     entity.Property(e => e.RoleId).HasColumnName("role_id");
+
+     entity.Property(e => e.RoleName)
+         .HasMaxLength(50)
+         .IsUnicode(false)
+         .HasColumnName("role_name");
+
+     entity.Property(e => e.CreateDate)
+         .HasColumnType("datetime")
+         .HasColumnName("create_date");
+
+     entity.Property(e => e.UpdateDate)
+         .HasColumnType("datetime")
+         .HasColumnName("update_date");
+
+     entity.Property(e => e.CreateBy)
+         .HasMaxLength(50)
+         .IsUnicode(false)
+         .HasColumnName("create_by");
+
+     entity.Property(e => e.UpdateBy)
+         .HasMaxLength(50)
+         .IsUnicode(false)
+         .HasColumnName("update_by");
+ });
+
+public virtual DbSet<Role> Roles { get; set; }
+
+	public class Role : BaseModel
+	{
+		public int RoleId { get; set; }
+		public string RoleName { get; set; } = string.Empty;
+        public ICollection<RolePlatform>? RolePlatforms { get; set; }
+
+    }
