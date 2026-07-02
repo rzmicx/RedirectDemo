@@ -1,0 +1,56 @@
+public class CategoryMappingActivity : BaseModel
+{
+    public int MappingActivityId { get; set; }
+
+    public int CategoryId { get; set; }
+
+    public int ActivityId { get; set; }
+
+    public Category? Category { get; set; }
+
+    public Activity? Activity { get; set; }
+}
+
+public virtual DbSet<CategoryMappingActivity> CategoryMappingActivities { get; set; }
+
+modelBuilder.Entity<CategoryMappingActivity>(entity =>
+{
+    entity.HasKey(e => e.MappingActivityId);
+
+    entity.ToTable("utl_category_mapping_activity");
+
+    entity.Property(e => e.MappingActivityId)
+        .HasColumnName("mapping_activity_id");
+
+    entity.Property(e => e.CategoryId)
+        .HasColumnName("category_id");
+
+    entity.Property(e => e.ActivityId)
+        .HasColumnName("activity_id");
+
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
+
+    entity.Property(e => e.CreateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("create_by");
+
+    entity.Property(e => e.UpdateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("update_by");
+
+    entity.HasOne(d => d.Category)
+        .WithMany()
+        .HasForeignKey(d => d.CategoryId);
+
+    entity.HasOne(d => d.Activity)
+        .WithMany()
+        .HasForeignKey(d => d.ActivityId);
+});
