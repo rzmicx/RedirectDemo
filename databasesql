@@ -1,0 +1,44 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[utl_category_mapping_activity](
+	[mapping_activity_id] [int] IDENTITY(1,1) NOT NULL,
+	[category_id] [int] NOT NULL,
+	[activity_id] [int] NOT NULL,
+	[create_date] [datetime] NULL,
+	[update_date] [datetime] NULL,
+	[create_by] [varchar](50) NULL,
+	[update_by] [varchar](50) NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[utl_category_mapping_activity] ADD  CONSTRAINT [DF_utl_category_mapping_activity_create_date]  DEFAULT (getdate()) FOR [create_date]
+GO
+ALTER TABLE [dbo].[utl_category_mapping_activity]  WITH CHECK ADD FOREIGN KEY([activity_id])
+REFERENCES [dbo].[utl_activity] ([activity_id])
+GO
+ALTER TABLE [dbo].[utl_category_mapping_activity]  WITH CHECK ADD FOREIGN KEY([category_id])
+REFERENCES [dbo].[utl_category] ([category_id])
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[utl_role_mapping_category](
+	[mapping_Category_id] [int] IDENTITY(1,1) NOT NULL,
+	[category_id] [int] NOT NULL,
+	[role_id] [int] NOT NULL,
+	[create_date] [datetime] NULL,
+	[update_date] [datetime] NULL,
+	[create_by] [varchar](50) NULL,
+	[update_by] [varchar](50) NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[utl_role_mapping_category] ADD  CONSTRAINT [DF_utl_role_mapping_category_create_date]  DEFAULT (getdate()) FOR [create_date]
+GO
+ALTER TABLE [dbo].[utl_role_mapping_category]  WITH CHECK ADD FOREIGN KEY([category_id])
+REFERENCES [dbo].[utl_category] ([category_id])
+GO
+ALTER TABLE [dbo].[utl_role_mapping_category]  WITH CHECK ADD FOREIGN KEY([role_id])
+REFERENCES [dbo].[utl_role] ([role_id])
+GO
