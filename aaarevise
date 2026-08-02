@@ -1,0 +1,52 @@
+public class ApprovalDashboardDetail
+{
+    public int? ApprovalId { get; set; }
+
+    public int? ReferenceId { get; set; }
+
+    public int EmployeeId { get; set; }
+
+    public string EmployeeName { get; set; } = string.Empty;
+
+    public string Status { get; set; } = string.Empty;
+
+    public bool? IsRevise { get; set; }
+}
+
+
+
+SELECT
+
+    dr.employee_id,
+
+    a.approval_id,
+
+    a.reference_id,
+
+    a.is_revise,
+
+    a.approval_order,
+
+    a.last_position_approval,
+
+    ad.status_code,
+
+    CASE
+        WHEN a.approval_id IS NULL THEN 'NOT_SUBMIT'
+        ELSE ad.status_code
+    END AS dashboard_status
+
+FROM utl_employeeDirectReport dr
+
+LEFT JOIN utl_approval a
+ON a.employee_id = dr.employee_id
+AND a.is_active = 1
+AND a.approval_type = @ApprovalType
+AND a.[year] = @Year
+AND a.[month] = @Month
+
+LEFT JOIN utl_approval_detail ad
+ON ad.approval_id = a.approval_id
+AND ad.direct_report_uid = @ManagerUid
+
+WHERE dr.direct_report_id = @ManagerId
