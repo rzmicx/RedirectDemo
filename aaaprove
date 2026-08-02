@@ -1,0 +1,137 @@
+modelBuilder.Entity<Approval>(entity =>
+{
+    entity.HasKey(e => e.ApprovalId)
+        .HasName("PK_utl_approval");
+
+    entity.ToTable("utl_approval");
+
+    entity.Property(e => e.ApprovalId).HasColumnName("approval_id");
+    entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+    entity.Property(e => e.TimesheetId).HasColumnName("timesheet_id");
+    entity.Property(e => e.OvertimeId).HasColumnName("overtime_id");
+    entity.Property(e => e.IsActive)
+        .HasColumnType("bit")
+        .HasColumnName("is_active");
+
+    entity.Property(e => e.IsSequence)
+        .HasColumnType("bit")
+        .HasColumnName("is_sequence");
+
+    entity.Property(e => e.LastPositionApproval)
+        .HasMaxLength(1)
+        .IsUnicode(false)
+        .HasColumnName("last_position_approval");
+
+    entity.Property(e => e.ApprovalOrder)
+        .HasColumnName("approval_order");
+
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
+
+    entity.Property(e => e.CreateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("create_by");
+
+    entity.Property(e => e.UpdateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("update_by");
+});
+
+modelBuilder.Entity<ApprovalDetail>(entity =>
+{
+    entity.HasKey(e => e.ApprovalDetailId)
+        .HasName("PK_utl_approval_detail");
+
+    entity.ToTable("utl_approval_detail");
+
+    entity.Property(e => e.ApprovalDetailId).HasColumnName("approval_detail_id");
+    entity.Property(e => e.ApprovalId).HasColumnName("approval_id");
+
+    entity.Property(e => e.DirectReportUid)
+        .HasMaxLength(50)
+        .HasColumnName("direct_report_uid");
+
+    entity.Property(e => e.DirectReportPosition)
+        .HasMaxLength(1)
+        .IsUnicode(false)
+        .HasColumnName("direct_report_position");
+
+    entity.Property(e => e.Note)
+        .HasMaxLength(255)
+        .IsUnicode(false)
+        .HasColumnName("note");
+
+    entity.Property(e => e.StatusCode)
+        .HasColumnType("char(5)")
+        .IsUnicode(false)
+        .HasColumnName("status_code");
+
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
+
+    entity.Property(e => e.CreateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("create_by");
+
+    entity.Property(e => e.UpdateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("update_by");
+});
+
+modelBuilder.Entity<ApprovalHistory>(entity =>
+{
+    entity.HasKey(e => e.ApprovalHistoryId)
+        .HasName("PK_utl_approval_history");
+
+    entity.ToTable("utl_approval_history");
+
+    entity.Property(e => e.ApprovalHistoryId).HasColumnName("approval_history_id");
+    entity.Property(e => e.TimesheetId).HasColumnName("timesheet_id");
+    entity.Property(e => e.OvertimeId).HasColumnName("overtime_id");
+
+    entity.Property(e => e.DirectReportUid)
+        .HasMaxLength(50)
+        .HasColumnName("direct_report_uid");
+
+    entity.Property(e => e.Note)
+        .HasMaxLength(255)
+        .IsUnicode(false)
+        .HasColumnName("note");
+
+    entity.Property(e => e.StatusCode)
+        .HasColumnType("char(5)")
+        .IsUnicode(false)
+        .HasColumnName("status_code");
+
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
+
+    entity.Property(e => e.CreateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("create_by");
+
+    entity.Property(e => e.UpdateBy)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("update_by");
+});
