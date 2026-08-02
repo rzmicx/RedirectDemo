@@ -1,3 +1,15 @@
+public class ApprovalDashboardSummary
+{
+    public int Year { get; set; }
+
+    public int Month { get; set; }
+
+    public int TotalEmployee { get; set; }
+
+    public int Submitted { get; set; }
+
+    public int NotSubmitted { get; set; }
+}
 public class Approval
 {
     public int ApprovalId { get; set; }
