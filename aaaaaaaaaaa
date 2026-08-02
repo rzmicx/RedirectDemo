@@ -1,0 +1,70 @@
+CREATE OR ALTER PROCEDURE dbo.usp_ApprovalDashboardSummary
+(
+    @ManagerId INT,
+    @Year INT,
+    @ApprovalType VARCHAR(50)
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    ;WITH MonthList AS
+    (
+        SELECT 1 AS [Month]
+
+        UNION ALL
+
+        SELECT [Month] + 1
+        FROM MonthList
+        WHERE [Month] < 12
+    ),
+
+    EmployeeList AS
+    (
+        SELECT DISTINCT
+            employee_id
+        FROM utl_employeeDirectReport
+        WHERE direct_report_id = @ManagerId
+    ),
+
+    ApprovalList AS
+    (
+        SELECT DISTINCT
+            employee_id,
+            [year],
+            [month]
+        FROM utl_approval
+        WHERE
+            is_active = 1
+            AND approval_type = @ApprovalType
+            AND [year] = @Year
+    )
+
+    SELECT
+        @Year AS [Year],
+        m.Month,
+
+        COUNT(*) AS TotalEmployee,
+
+        COUNT(a.employee_id) AS Submitted,
+
+        COUNT(*) - COUNT(a.employee_id) AS NotSubmitted
+
+    FROM MonthList m
+
+    CROSS JOIN EmployeeList e
+
+    LEFT JOIN ApprovalList a
+        ON a.employee_id = e.employee_id
+       AND a.[month] = m.Month
+
+    GROUP BY
+        m.Month
+
+    ORDER BY
+        m.Month
+
+    OPTION (MAXRECURSION 12);
+
+END
+GO
