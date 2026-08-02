@@ -1,3 +1,63 @@
+public class Approval
+{
+    public int ApprovalId { get; set; }
+    public int EmployeeId { get; set; }
+
+    public int? ReferenceId { get; set; }
+    public string? ApprovalType { get; set; }
+
+    public bool? IsActive { get; set; }
+    public bool? IsRevise { get; set; }
+
+    public string? LastPositionApproval { get; set; }
+    public int? ApprovalOrder { get; set; }
+
+    public string? CreateBy { get; set; }
+    public DateTime? CreateDate { get; set; }
+    public string? UpdateBy { get; set; }
+    public DateTime? UpdateDate { get; set; }
+}
+public class ApprovalDetail
+{
+    public int ApprovalDetailId { get; set; }
+
+    public int ApprovalId { get; set; }
+
+    public byte[] DirectReportUid { get; set; } = null!;
+    public string DirectReportPosition { get; set; } = null!;
+
+    public string? Note { get; set; }
+    public string StatusCode { get; set; } = null!;
+
+    public string? CreateBy { get; set; }
+    public DateTime? CreateDate { get; set; }
+    public string? UpdateBy { get; set; }
+    public DateTime? UpdateDate { get; set; }
+}
+public class ApprovalHistory
+{
+    public int ApprovalHistoryId { get; set; }
+
+    public int? ApprovalId { get; set; }
+
+    public int? ReferenceId { get; set; }
+    public string? ApprovalType { get; set; }
+
+    public byte[] DirectReportUid { get; set; } = null!;
+
+    public string? Note { get; set; }
+    public string StatusCode { get; set; } = null!;
+
+    public string? CreateBy { get; set; }
+    public DateTime? CreateDate { get; set; }
+    public string? UpdateBy { get; set; }
+    public DateTime? UpdateDate { get; set; }
+}
+
+
+
+
+
 modelBuilder.Entity<Approval>(entity =>
 {
     entity.HasKey(e => e.ApprovalId)
@@ -5,17 +65,27 @@ modelBuilder.Entity<Approval>(entity =>
 
     entity.ToTable("utl_approval");
 
-    entity.Property(e => e.ApprovalId).HasColumnName("approval_id");
-    entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
-    entity.Property(e => e.TimesheetId).HasColumnName("timesheet_id");
-    entity.Property(e => e.OvertimeId).HasColumnName("overtime_id");
+    entity.Property(e => e.ApprovalId)
+        .HasColumnName("approval_id");
+
+    entity.Property(e => e.EmployeeId)
+        .HasColumnName("employee_id");
+
+    entity.Property(e => e.ReferenceId)
+        .HasColumnName("reference_id");
+
+    entity.Property(e => e.ApprovalType)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("approval_type");
+
     entity.Property(e => e.IsActive)
         .HasColumnType("bit")
         .HasColumnName("is_active");
 
-    entity.Property(e => e.IsSequence)
+    entity.Property(e => e.IsRevise)
         .HasColumnType("bit")
-        .HasColumnName("is_sequence");
+        .HasColumnName("is_revise");
 
     entity.Property(e => e.LastPositionApproval)
         .HasMaxLength(1)
@@ -25,23 +95,23 @@ modelBuilder.Entity<Approval>(entity =>
     entity.Property(e => e.ApprovalOrder)
         .HasColumnName("approval_order");
 
-    entity.Property(e => e.CreateDate)
-        .HasColumnType("datetime")
-        .HasColumnName("create_date");
-
-    entity.Property(e => e.UpdateDate)
-        .HasColumnType("datetime")
-        .HasColumnName("update_date");
-
     entity.Property(e => e.CreateBy)
         .HasMaxLength(50)
         .IsUnicode(false)
         .HasColumnName("create_by");
 
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
     entity.Property(e => e.UpdateBy)
         .HasMaxLength(50)
         .IsUnicode(false)
         .HasColumnName("update_by");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
 });
 
 modelBuilder.Entity<ApprovalDetail>(entity =>
@@ -51,8 +121,11 @@ modelBuilder.Entity<ApprovalDetail>(entity =>
 
     entity.ToTable("utl_approval_detail");
 
-    entity.Property(e => e.ApprovalDetailId).HasColumnName("approval_detail_id");
-    entity.Property(e => e.ApprovalId).HasColumnName("approval_id");
+    entity.Property(e => e.ApprovalDetailId)
+        .HasColumnName("approval_detail_id");
+
+    entity.Property(e => e.ApprovalId)
+        .HasColumnName("approval_id");
 
     entity.Property(e => e.DirectReportUid)
         .HasMaxLength(50)
@@ -69,28 +142,29 @@ modelBuilder.Entity<ApprovalDetail>(entity =>
         .HasColumnName("note");
 
     entity.Property(e => e.StatusCode)
-        .HasColumnType("char(5)")
+        .HasMaxLength(5)
         .IsUnicode(false)
         .HasColumnName("status_code");
-
-    entity.Property(e => e.CreateDate)
-        .HasColumnType("datetime")
-        .HasColumnName("create_date");
-
-    entity.Property(e => e.UpdateDate)
-        .HasColumnType("datetime")
-        .HasColumnName("update_date");
 
     entity.Property(e => e.CreateBy)
         .HasMaxLength(50)
         .IsUnicode(false)
         .HasColumnName("create_by");
 
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
     entity.Property(e => e.UpdateBy)
         .HasMaxLength(50)
         .IsUnicode(false)
         .HasColumnName("update_by");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
 });
+
 
 modelBuilder.Entity<ApprovalHistory>(entity =>
 {
@@ -99,9 +173,19 @@ modelBuilder.Entity<ApprovalHistory>(entity =>
 
     entity.ToTable("utl_approval_history");
 
-    entity.Property(e => e.ApprovalHistoryId).HasColumnName("approval_history_id");
-    entity.Property(e => e.TimesheetId).HasColumnName("timesheet_id");
-    entity.Property(e => e.OvertimeId).HasColumnName("overtime_id");
+    entity.Property(e => e.ApprovalHistoryId)
+        .HasColumnName("approval_history_id");
+
+    entity.Property(e => e.ApprovalId)
+        .HasColumnName("approval_id");
+
+    entity.Property(e => e.ReferenceId)
+        .HasColumnName("reference_id");
+
+    entity.Property(e => e.ApprovalType)
+        .HasMaxLength(50)
+        .IsUnicode(false)
+        .HasColumnName("approval_type");
 
     entity.Property(e => e.DirectReportUid)
         .HasMaxLength(50)
@@ -113,25 +197,25 @@ modelBuilder.Entity<ApprovalHistory>(entity =>
         .HasColumnName("note");
 
     entity.Property(e => e.StatusCode)
-        .HasColumnType("char(5)")
+        .HasMaxLength(5)
         .IsUnicode(false)
         .HasColumnName("status_code");
-
-    entity.Property(e => e.CreateDate)
-        .HasColumnType("datetime")
-        .HasColumnName("create_date");
-
-    entity.Property(e => e.UpdateDate)
-        .HasColumnType("datetime")
-        .HasColumnName("update_date");
 
     entity.Property(e => e.CreateBy)
         .HasMaxLength(50)
         .IsUnicode(false)
         .HasColumnName("create_by");
 
+    entity.Property(e => e.CreateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("create_date");
+
     entity.Property(e => e.UpdateBy)
         .HasMaxLength(50)
         .IsUnicode(false)
         .HasColumnName("update_by");
+
+    entity.Property(e => e.UpdateDate)
+        .HasColumnType("datetime")
+        .HasColumnName("update_date");
 });
