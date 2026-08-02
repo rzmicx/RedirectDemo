@@ -14,39 +14,48 @@ public class ApprovalDashboardDetail
 }
 
 
-
+declare @Year INT  = 2026
+declare @Month INT = 8
+declare @ApprovalType varchar(50) = 'T'
+declare @ManagerId int = '310' 
 SELECT
 
-    dr.employee_id,
+    dr.employee_id as EmployeeId,
 
-    a.approval_id,
+    a.approval_id as ApprovalId,
 
-    a.reference_id,
-
-    a.is_revise,
-
-    a.approval_order,
-
-    a.last_position_approval,
-
-    ad.status_code,
+    a.reference_id as ReferenceId,
+    rr.role_id as RoleId,
+    rr.role_name as RoleName,
+    a.is_revise as IsRevise,
+    em.nama as EmployeeName,
+    
 
     CASE
         WHEN a.approval_id IS NULL THEN 'NOT_SUBMIT'
         ELSE ad.status_code
-    END AS dashboard_status
+    END AS DashboardStatus
 
 FROM utl_employeeDirectReport dr
-
+left join utl_timesheet t 
+on t.employee_id = dr.employee_id
+AND t.[year] = @Year
+AND t.[month] = @Month
 LEFT JOIN utl_approval a
-ON a.employee_id = dr.employee_id
+ON a.reference_id = t.timesheet_id 
 AND a.is_active = 1
-AND a.approval_type = @ApprovalType
-AND a.[year] = @Year
-AND a.[month] = @Month
+AND a.approval_type = @ApprovalType 
 
 LEFT JOIN utl_approval_detail ad
 ON ad.approval_id = a.approval_id
-AND ad.direct_report_uid = @ManagerUid
+AND ad.direct_report_uid = @ManagerId
 
+left join utl_employee em
+on dr.employee_id = em.employee_id
+left join utl_timesheet_detail ud 
+on t.timesheet_id = ud.timesheet_id
+left join utl_backlog bk 
+on bk.backlog_id = ud.backlog_id
+left join utl_role rr 
+on rr.role_id = bk.role_id
 WHERE dr.direct_report_id = @ManagerId
