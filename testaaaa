@@ -1,0 +1,98 @@
+ 
+
+CREATE TABLE [dbo].[utl_approval](
+	[approval_id] [int] IDENTITY(1,1) NOT NULL PRIMARY key,
+	[employee_id] [int] NOT NULL,
+    [timesheet_id] int,
+	overtime_id int ,
+	[is_active] bit,
+    [is_sequence] bit,
+    [last_position_approval] varchar(1),
+    [approval_order] int,
+	[create_by] [varchar](50) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [varchar](50) NULL,
+	[update_date] [datetime] NULL
+) 
+go
+CREATE TABLE [dbo].[utl_approval_detail](
+	[approval_detail_id] [int] IDENTITY(1,1) NOT NULL primary key, 
+	[approval_id] [int] NOT NULL,
+    [direct_report_uid] [varbinary](50) NOT NULL,
+    [direct_report_position] [varchar](1) NOT NULL,
+    [note] varchar (255),
+    [status_code] [char](5) NOT NULL,
+	[create_by] [varchar](50) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [varchar](50) NULL,
+	[update_date] [datetime] NULL
+) 
+go
+CREATE TABLE [dbo].[utl_approval_history](
+	[approval_history_id] [int] IDENTITY(1,1) NOT NULL primary key, 
+	[timesheet_id] int,
+	overtime_id int ,
+    [direct_report_uid] [varbinary](50) NOT NULL, 
+    [note] varchar (255),
+    [status_code] [char](5) NOT NULL,
+	[create_by] [varchar](50) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [varchar](50) NULL,
+	[update_date] [datetime] NULL
+) 
+
+CREATE TABLE [dbo].[utl_employeeDirectReport](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[employee_id] [int] NOT NULL,
+	[direct_report_id] [int] NULL,
+	[direct_report_position] [varchar](1) NULL,
+	[create_date] [datetime] NULL,
+	[create_by] [varchar](50) NULL,
+	[update_date] [datetime] NULL,
+	[update_by] [varchar](50) NULL
+) 
+
+
+            modelBuilder.Entity<MonthlyUtilization>(entity =>
+            {
+                entity.HasKey(e => e.MonthlyUtilizationId)
+                    .HasName("PK_utl_monthlyUtilization");
+
+                entity.ToTable("utl_monthlyUtilization");
+
+                entity.Property(e => e.MonthlyUtilizationId).HasColumnName("monthlyUtilization_id");
+                entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+                entity.Property(e => e.TaskId).HasColumnName("task_id");
+                entity.Property(e => e.Year).HasColumnName("year");
+                entity.Property(e => e.Month).HasColumnName("month");
+                entity.Property(e => e.Point).HasColumnName("point");
+                entity.Property(e => e.WorkingHours).HasColumnName("working_hours");
+                entity.Property(e => e.Planning).HasColumnName("planning");
+
+                entity.Property(e => e.IsLeave)
+                    .HasColumnType("bit")
+                    .HasColumnName("is_leave");
+
+                entity.Property(e => e.Repository)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("repository");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_date");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_date");
+
+                entity.Property(e => e.CreateBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("create_by");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("update_by");
+            });
